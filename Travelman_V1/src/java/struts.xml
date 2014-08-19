@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+    "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+    "http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+
+    <constant name="struts.devMode" value="true" />
+	
+    <package name="default" extends="struts-default">
+			
+        <action name="loginAction"
+			class="com.travelman.action.LoginAction">					
+            <result name="individual" type="chain">
+                <param name="actionName">liveTracking</param>               
+                <param name="namespace">/</param>
+            </result>
+            <result name="group" type="chain">
+                <param name="actionName">liveTracking</param>               
+                <param name="namespace">/</param>
+            </result> 
+            <result name="admin" type="chain">
+                <param name="actionName">liveTracking</param>               
+                <param name="namespace">/</param>
+            </result> 
+            <result name="input">/login.jsp</result>
+            <result name="incative">/login.jsp</result>
+        </action>
+        
+        <action name="selectVehicleForHistoryTracking" class="com.travelman.action.SelectVehicleForHistoryTrackingAction">
+            <result name="group">/group/selectVehicleForHistoryTracking.jsp</result>
+            <result name="admin">/admin/selectVehicleForHistoryTracking.jsp</result>
+            <result name="individual">/individual/selectVehicleForHistoryTracking.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+        
+        <action name="userManageAction"
+			class="com.travelman.action.WelcomeAction">			
+            <result name="success">/main.jsp</result>
+            <result name="input">/tman.jsp</result>
+        </action>
+
+        <action name="entryAction" class="com.travelman.action.EntryAction">
+            <result name="success">/formdataentry.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>
+				
+        <action name="formDataEntryAction" class="com.travelman.action.FormDataEntryAction">
+            <result name="success">/formdata.jsp</result>
+            <result name="error">/error.jsp</result>
+        </action>						
+	
+        <action name="logout" class="com.travelman.action.LogoutAction">
+            <result name="success">/login.jsp</result>
+        </action>
+	   
+        <action name="liveTracking" class="com.travelman.action.LiveTrackingAction">
+            <result name="individual">/individual/liveTracking.jsp</result>
+            <result name="group">/group/liveTracking.jsp</result>
+            <result name="admin">/admin/liveTrackingG.jsp</result>
+            <result name="error">/login.jsp</result>
+        </action>
+	
+        <action name="trackingAjax" method="getLatestVehicleData" class="com.travelman.action.TrackingAjaxAction">
+            <result name="admin">/admin/liveTrackingG.jsp</result>
+            <result name="error">/login.jsp</result>
+        </action>      
+        <action name="historyTracking" class="com.travelman.action.HistoryTrackingAction">
+            <result name="individual">/individual/historyTracking.jsp</result>
+            <result name="group">/group/historyTracking.jsp</result>
+            <result name="admin">/admin/historyTracking.jsp</result>
+            <result name="error">/login.jsp</result>
+        </action>
+	   
+        <action name="home" class="com.travelman.action.HomeAction">
+            <result name="individual" >/individual/individualHome.jsp</result>
+            <result name="group" >/group/groupHome.jsp</result>
+            <result name="admin">/admin/adminHome.jsp</result>
+            <result name="error">/login.jsp</result>
+        </action>
+        
+        <action name="editMgtDevice" class="com.travelman.action.device.EditMgtDeviceAction">
+            <result name="group">/group/editMgtDevice.jsp</result>
+            <result name="admin">/admin/editMgtDevice.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+        
+        <action name="selectDeviceForEdit" class="com.travelman.action.device.SelectDeviceForEdit">
+            <result name="group">/group/selectDeviceForEdit.jsp</result>
+            <result name="admin">/admin/selectDeviceForEdit.jsp</result>
+            <result name="input">/login.jsp</result>
+            <result name="SQLException">/SQLException.jsp</result>
+        </action>
+        
+        <action name="editDevice" class="com.travelman.action.device.EditDeviceAction">
+            <result name="group">/group/editDevice.jsp</result>
+            <result name="admin">/admin/editDevice.jsp</result>
+            <result name="success">/admin/success.jsp</result>
+            <result name="input">/group/editDevice.jsp</result>
+            <result name="SQLException">/SQLException.jsp</result>
+        </action>
+		
+        <action name="listDeleteDevice" class="com.travelman.action.device.ListDeleteDeviceAction">
+            <result name="group">/group/listDeviceForDelete.jsp</result>
+            <result name="admin">/admin/listDeviceForDelete.jsp</result>
+            <result name="input">/login.jsp</result>
+            <result name="SQLException">/SQLException.jsp</result>
+        </action>
+        
+        <action name="detailDeleteDevice" class="com.travelman.action.device.DetailDeleteDeviceAction">
+            <result name="group">/group/detailDeleteDevice.jsp</result>
+            <result name="admin">/admin/detailDeleteDevice.jsp</result>
+            <result name="input">/login.jsp</result>
+            <result name="null">/login.jsp</result>
+        </action>
+        
+        <action name="deleteDevice" class="com.travelman.action.device.DeleteDeviceAction">
+            <result name="group">/group/deleteDeviceSuccess.jsp</result>
+            <result name="admin">/admin/deleteDeviceSuccess.jsp</result>
+            <result name="input" type="chain">
+                <param name="actionName">listDeleteDevice</param>
+            </result>
+            
+            <result name="SQLException">/SQLException.jsp</result>
+        </action>
+        
+        <action name="deviceMgtAction" class="com.travelman.action.device.DeviceMgtAction">
+            <result name="group">/group/devicemanagement.jsp</result>
+            <result name="admin">/admin/devicemanagement.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+		
+        <action name="vehicleMgtAction" class="com.travelman.action.vehicle.VehicleMgtAction">
+            <result name="group">/group/vehiclemanagement.jsp</result>
+            <result name="admin">/admin/vehiclemanagement.jsp</result>
+            <result name="input">/group/vehiclemanagement.jsp</result>
+        </action>
+        
+        <action name="addNewVehicle" class="com.travelman.action.vehicle.AddNewVehicleAction">
+            <result name="group">/group/addvehicleprofile.jsp</result>
+            <result name="admin">/admin/addvehicleprofile.jsp</result>
+            <result name="input">/vehiclemanagement.jsp</result>
+        </action>
+		
+        <action name="addExistingVehicle" class="com.travelman.action.vehicle.AddExistingVehicle">
+            <result name="admin">/admin/addVehiclesuccess.jsp</result>
+            <result name="group">/group/addVehiclesuccess.jsp</result>
+            <result name="input">/group/addExVehicle.jsp</result>
+             
+        </action>
+        
+        <action name="addExVehicle" class="com.travelman.action.vehicle.VehicleMgtAction">
+            <result name="group">/group/addExVehicle.jsp</result>
+            <result name="admin">/admin/addExVehicle.jsp</result>
+            <result name="input">/vehiclemanagement.jsp</result>
+        </action>
+		
+        <action name="listVehicle" class="com.travelman.action.vehicle.ListVehicleAction">
+            <result name="group">/group/listvehicle.jsp</result>
+            <result name="admin">/admin/listvehicle.jsp</result>
+            <result name="input">/vehiclemanagement.jsp</result>
+        </action>
+        
+        <action name="searchVehicle" class="com.travelman.action.vehicle.SearchVehicleAction">
+            <result name="admin">/admin/searchVehicle.jsp</result>
+            <result name="group">/group/searchVehicle.jsp</result>
+            <result name="individual">/individual/searchVehicle.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+		
+        <action name="addVehicle" class="com.travelman.action.vehicle.AddVehicleProfileAction">
+            <result name="group">/group/addVehiclesuccess.jsp</result>
+            <result name="admin">/admin/addVehiclesuccess.jsp</result>
+            <result name="deviceNotFound">/group/addvehicleprofile.jsp</result>
+            <result name="error">/SQLException.jsp</result>
+            <result name="input">/group/addvehicleprofile.jsp</result>
+        </action>
+        
+        <action name="editVehicleList" class="com.travelman.action.vehicle.EditVehicleListAction">
+            <result name="group">/group/editVehicleList.jsp</result>
+            <result name="admin">/admin/editVehicleList.jsp</result>
+            <result name="input">/vehiclemanagement.jsp</result>
+        </action>
+        
+        <action name="editVehicleData" class="com.travelman.action.vehicle.EditVehicleDataAction">
+            <result name="group">/group/editVehicleData.jsp</result>
+            <result name="admin">/admin/editVehicleData.jsp</result>
+            <result name="input">/vehiclemanagement.jsp</result>
+        </action>
+	
+        <action name="saveEditVehicleData" class="com.travelman.action.vehicle.SaveEditVehicleDataAction">
+            <result name="success">/group/editVehicleSuccess.jsp</result>           
+            <result  name ="input" type="chain">
+                <param name="actionName">editVehicleData</param>
+                <param name="namespace">/</param>
+            </result> 
+           <!-- <result name="input">/admin/editVehicleData.jsp</result>    -->
+        </action>
+        
+        <action name="deleteVehicleList" class="com.travelman.action.vehicle.DeleteVehicleListAction">
+            <result name="group">/group/deleteVehicleList.jsp</result>
+            <result name="admin">/admin/deleteVehicleList.jsp</result>
+            <result name="input">/vehiclemanagement.jsp</result>
+        </action>
+        
+        
+        <action name="deleteVehicle" class="com.travelman.action.vehicle.DeleteVehicleAction">
+            <result name="group">/group/deleteVehicleSuccess.jsp</result>
+            <result name="admin">/admin/deleteVehicleSuccess.jsp</result>
+            <result name="input">/vehiclemanagement.jsp</result>
+        </action>
+
+		
+        <action name="profileMgtAction" class="com.travelman.action.profile.ProfileMgtAction">
+            <result name="group">/group/profilemanagement.jsp</result>
+            <result name="admin">/admin/profilemanagement.jsp</result>
+            <result name="input">group/profilemanagement.jsp</result>
+        </action>
+		
+        <action name="listDeviceAction" class="com.travelman.action.device.ListDeviceAction">
+            <result name="group">/group/listviewdevice.jsp</result>
+            <result name="admin">/admin/listviewdevice.jsp</result>
+            <result name="null">/null.jsp</result>
+        </action>
+        
+        <!--- use for change password  -->
+        <action name="changePassword" class="com.travelman.action.user.ChangePasswordAction" >
+            <result name="admin">/admin/changePassword.jsp</result>
+            <result name="group">/group/changePassword.jsp</result>
+            <result name="individual">/individual/changePassword.jsp</result>           
+        </action>	
+        
+        <action name="saveNewPassword" class="com.travelman.action.user.SaveNewPasswordAction" >
+            <result name="admin">/admin/savePasswordSuccess.jsp</result>
+            <result name="group">/group/savePasswordSuccess.jsp</result>
+            <result name="individual">/individual/savePasswordSuccess.jsp</result>
+            <result name="inputAdmin">/admin/changePassword.jsp</result>
+            <result name="inputGroup">/group/changePassword.jsp</result>
+            <result name="inputIndividual">/individual/changePassword.jsp</result>
+        </action>      
+		
+                
+        <action name="addUser" class="com.travelman.action.user.AddUserAction">
+            <result name="group">/group/addUserProfile.jsp</result>
+            <result name="admin">/admin/addUserProfile.jsp</result>
+            <result name="input">/group/usermanage.jsp</result>
+        </action>
+                
+        <action name="addUserProfile" class="com.travelman.action.user.AddUserProfileAction">			
+            <result name="group">/group/addUserSuccess.jsp</result>
+            <result name="admin">/admin/addUserSuccess.jsp</result>
+            <result name="input">/group/usermanage.jsp</result>
+        </action>
+		
+        <action name="smsMgtAction" class="com.travelman.action.sms.SmsMgtAction">
+            <result name="group">/group/sendsms.jsp</result>
+            <result name="individual">/individual/sendsms.jsp</result>
+            <result name="admin">/admin/sendsms.jsp</result>
+            <result name="input">/group/sendsms.jsp</result>
+        </action>
+                
+        <action name="listUser" class="com.travelman.action.user.ListUserAction">
+            <result name="group">/group/listUser.jsp</result>
+            <result name="admin">/admin/listUser.jsp</result>
+            <result name="input">/group/usermanage.jsp</result>
+        </action>
+        
+        <action name="saveEditUser" class="com.travelman.action.user.SaveEditUserAction">                        
+            <result name="group">/group/saveEditUserSuccess.jsp</result>
+            <result name="admin">/admin/saveEditUserSuccess.jsp</result>
+            <result name="input">/group/usermanage.jsp</result>
+        </action>
+
+                
+        <action name="editUser" class="com.travelman.action.user.EditUserAction">                        
+            <result name="group">/group/editUser.jsp</result>
+            <result name="admin">/admin/editUser.jsp</result>
+            <result name="input">/group/usermanage.jsp</result>
+        </action>
+
+        <action name="editUserProfile" class="com.travelman.action.user.EditUserProfileAction">                        
+            <result name="group">/group/editUserProfile.jsp</result>
+            <result name="admin">/admin/editUserProfile.jsp</result>
+            <result name="input">/group/usermanage.jsp</result>
+        </action>
+
+		
+        <action name="sendSmsAction" class="com.travelman.action.sms.SendSmsAction">
+            <result name="group">/group/success.jsp</result>
+            <result name="admin">/admin/success.jsp</result>
+            <result name="individual">/individual/success.jsp</result>
+        </action>
+		
+        <action name="feedbackMgtAction" class="com.travelman.action.feedback.FeedbackMgtAction">
+            <result name="group">/group/givefeedback.jsp</result>
+            <result name="individual">/individual/givefeedback.jsp</result>
+            <result name="admin">/admin/givefeedback.jsp</result>
+            <result name="input">/group/givefeedback.jsp</result>
+        </action>
+
+        <action name="giveFeedbackAction" class="com.travelman.action.feedback.GiveFeedbackAction">
+            <result name="group">/group/success.jsp</result>
+            <result name="individual">/individual/success.jsp</result>
+            <result name="admin">/admin/success.jsp</result>
+        </action>
+
+        <action name="emailMgtAction" class="com.travelman.action.email.EmailMgtAction">
+            <result name="group">/group/sendmail.jsp</result>
+            <result name="admin">/admin/sendmail.jsp</result>
+            <result name="individual">/individual/sendmail.jsp</result>
+        </action>
+		
+        <action name="addDevProfileAction" class="com.travelman.action.device.AddDevProfileAction">
+            <result name="group">/group/adddeviceprofile.jsp</result>
+            <result name="admin">/admin/adddeviceprofile.jsp</result>
+            <result name="input">/group/adddeviceprofile.jsp</result>
+        </action>
+                
+        <action name="addDeviceProfileAction"
+			class="com.travelman.action.device.AddDeviceProfileAction">
+            <result name="group">/group/adddeviceprofile.jsp</result>
+            <result name="admin">/admin/adddeviceprofile.jsp</result>
+            <result name="success">/admin/success.jsp</result>
+            <result name="input">/admin/adddeviceprofile.jsp</result>
+            <result name="input1">/admin/adddeviceprofile.jsp</result>
+            <result name="input2">/group/adddeviceprofile.jsp</result>
+            <result name="SQLException">/SQLException.jsp</result>
+        </action>
+		
+        		
+        <action name="sendEmailAction" class="com.travelman.action.email.SendEmailAction">
+            <result name="group">/group/success.jsp</result>
+            <result name="admin">/admin/success.jsp</result>
+            <result name="individual">/individual/success.jsp</result>
+        </action>
+		
+        
+		
+        <action name="tripReportMgt" class="com.travelman.action.report.TripReportMgtAction">
+            <result name="group">/group/tripReport.jsp</result>
+            <result name="admin">/admin/tripReport.jsp</result>
+            <result name="individual">/individual/tripReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+		
+        <action name="listTripReport" class="com.travelman.action.report.TripReportAction">
+            <result name="group">/group/listTripReport.jsp</result>
+            <result name="admin">/admin/listTripReport.jsp</result>
+            <result name="individual">/individual/listTripReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+		
+        <action name="stoppageReportMgt" class="com.travelman.action.report.StoppageReportMgtAction">
+            <result name="group">/group/stoppageReport.jsp</result>
+            <result name="admin">/admin/stoppageReport.jsp</result>
+            <result name="individual">/individual/stoppageReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+		
+        <action name="listStoppageReport" class="com.travelman.action.report.StoppageReportAction">
+            <result name="group">/group/listStoppageReport.jsp</result>
+            <result name="admin">/admin/listStoppageReport.jsp</result>
+            <result name="individual">/individual/listStoppageReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+
+        <action name="idealTimeReportMgt" class="com.travelman.action.report.IdealTimeReportMgtAction">
+            <result name="group">/group/idealTimeReport.jsp</result>
+            <result name="admin">/admin/idealTimeReport.jsp</result>
+            <result name="individual">/individual/idealTimeReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+	
+        <action name="listIdealTimeReport" class="com.travelman.action.report.IdealTimeReportAction">
+            <result name="group">/group/listIdealTimeReport.jsp</result>
+            <result name="admin">/admin/listIdealTimeReport.jsp</result>
+            <result name="individual">/individual/listIdealTimeReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+	
+        <action name="historyReportMgt" class="com.travelman.action.report.HistoryReportMgtAction">
+            <result name="group">/group/historyReport.jsp</result>
+            <result name="admin">/admin/historyReport.jsp</result>
+            <result name="individual">/individual/historyReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+	
+        <action name="listHistoryReport" class="com.travelman.action.report.HistoryReportAction">
+            <result name="group">/group/listHistoryReport.jsp</result>
+            <result name="admin">/admin/listHistoryReport.jsp</result>
+            <result name="individual">/individual/listHistoryReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+        
+        <!--new reports -->
+        
+        <action name="overSpeedReportMgt" class="com.travelman.action.report.OverSpeedReportMgtAction">
+            <result name="group">/group/overSpeedReport.jsp</result>
+            <result name="admin">/admin/overSpeedReport.jsp</result>
+            <result name="individual">/individual/overSpeedReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+	
+        <action name="listOverSpeedReport" class="com.travelman.action.report.OverSpeedReportAction">
+            <result name="group">/group/listOverSpeedReport.jsp</result>
+            <result name="admin">/admin/listOverSpeedReport.jsp</result>
+            <result name="individual">/individual/listOverSpeedReport.jsp</result>
+            <result name="input">/login.jsp</result>
+        </action>
+        
+        <action name="paymentMgt" class="com.travelman.action.billing.PaymentMgtAction">
+            <result name="group">/group/paymentUserId.jsp</result>
+            <result name="admin">/admin/paymentUserId.jsp</result>           
+            <result name="input">/login.jsp</result>
+        </action>
+	
+        <action name="payment" class="com.travelman.action.billing.PaymentAction">
+            <result name="group">/group/payment.jsp</result>
+            <result name="admin">/admin/payment.jsp</result>           
+            <result name="input">/login.jsp</result>
+        </action>
+	
+        <action name="savePayment" class="com.travelman.action.billing.SavePaymentAction">
+            <result name="group">/group/PaymentSaved.jsp</result>
+            <result name="admin">/admin/paymentSaved.jsp</result>           
+            <result name="input">/login.jsp</result>
+        </action>
+        
+        <action name="generateBill" class="com.travelman.action.billing.GenerateBillAction">
+            <result name="admin">/admin/generateBill.jsp</result>           
+            <result name="input">/login.jsp</result>
+        </action>
+        
+        <action name="offerAction" class="com.travelman.action.billing.OfferAction">
+            <result name="group">/Bill/defineOffers.jsp</result>
+            <result name="admin">/Bill/defineOffers.jsp</result>      
+           
+        </action>
+	
+        <action name="offerPlanAction" class="com.travelman.action.billing.OfferPlanAction">
+            <result name="success">/Bill/offerSuccess.jsp</result>
+        </action>
+        
+        <action name="offerDisplayAction" class="com.travelman.action.billing.OfferDisplayAction">
+            <result name="group">/group/DisplayOffer.jsp</result>
+            <result name="admin">/admin/DisplayOffer.jsp</result>           
+            <result name="input">/login.jsp</result>
+            
+        </action>
+        <action name="couponAction" class="com.travelman.action.billing.CouponAction">
+            <result name="success">/Bill/definecoupons.jsp</result>
+        </action>
+         
+        <action name="couponPlanAction" class="com.travelman.action.billing.CouponPlanAction">
+            <result name="success">/Bill/couponSuccess.jsp</result>
+        </action>
+        
+        
+        <!--  raj kumar's work  -->
+        
+        <action name="createPlans" class="com.travelman.action.billing.PlanMgtAction">
+            <result name="admin">/Bill/cretePlan.jsp</result> 
+            <result name="group">/Bill/cretePlan.jsp</result> 
+   
+     
+        </action>
+        <action name="savePlan" class="com.travelman.action.billing.CreatePlanAction">
+            <result name="success">/admin/SuccessPlan.jsp</result> 
+            <result name="group">/admin/SuccessPlan.jsp</result> 
+   
+     
+        </action>
+        
+<!--        <action name="listPlan" class="com.travelman.action.billing.ListPlanAction">
+            
+            <result name="admin">/admin/listAllPlan.jsp</result>
+            <result name="group">/group/listAllPlans.jsp</result>
+            <result name="individual">/individual/listAllPlanind.jsp</result>
+        </action>-->
+                
+        <action name="listPlan" class="com.travelman.action.billing.PlanAction">
+            
+            <result name="admin">/admin/listAllPlan.jsp</result>
+            <result name="group">/group/listAllPlan.jsp</result>
+            
+        </action>
+	
+	 
+        <action name="createTax" class="com.travelman.action.billing.TaxAction">
+            
+            <result name="admin">/Bill/defineTaxs.jsp</result>
+            
+        </action>
+        <action name="saveTax" class="com.travelman.action.billing.CreateTaxAction">
+            
+            <result name="success">/admin/SuccessTaxs.jsp</result>
+            
+        </action>
+        <action name="updateTaxes" class="com.travelman.action.billing.UpdateTaxAction">
+            
+            <result name="success">/admin/updateTax.jsp</result>
+            
+        </action>
+        <action name="save" class="com.travelman.action.billing.UpdateTax">
+            
+            <result name="success">/admin/updateTaxSuccess.jsp</result>
+            
+        </action>
+        <action name="assignPlan" class="com.travelman.action.billing.AssignPlanAction">
+            
+            <result name="admin">/Bill/assignPlan.jsp</result>
+            <result name="group">/Bill/assignPlan.jsp</result>
+            
+        </action>
+        <action name="assignPlanDisp" class="com.travelman.action.billing.AssignPlanSave">
+            
+            <result name="admin">/admin/assignPlanSuccess.jsp</result>
+            <result name="group">/group/assignPlanSuccess.jsp</result>
+            
+        </action>
+
+	
+	
+	
+	
+	
+	
+    </package>
+   
+</struts>
