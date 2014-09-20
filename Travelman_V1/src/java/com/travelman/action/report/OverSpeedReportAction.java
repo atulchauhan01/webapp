@@ -2,17 +2,20 @@ package com.travelman.action.report;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.report.ReportBusinesService;
 import com.travelman.domain.Report;
 import com.travelman.domain.User;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author Atul
  */
 public class OverSpeedReportAction extends ActionSupport {
+    private Logger log=Logger.getLogger(OverSpeedReportAction.class);
 
     private String vregistration_num;
     private String startDate;
@@ -28,7 +31,7 @@ public class OverSpeedReportAction extends ActionSupport {
         User user = (User) session.get("USER");
         String actionResult = "";
         ReportBusinesService reportBusinesService = new ReportBusinesService();
-        System.out.println("over speed : " + getOverSpeed());
+        log.info("over speed : " + getOverSpeed());
         list = reportBusinesService.createOverSpeed(user, startDate, endDate, vregistration_num, getOverSpeed());
 
         setCurrentUserName(user.getFname() + " " + user.getLname());

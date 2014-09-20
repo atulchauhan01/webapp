@@ -4,12 +4,15 @@ import java.util.*;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.device.DeviceBusinesService;
 import com.travelman.data.service.DataService;
 import com.travelman.domain.User;
 import com.travelman.domain.Device;
+import org.apache.log4j.Logger;
 
 public class AddDeviceProfileAction extends ActionSupport {
+    private Logger log=Logger.getLogger(AddDeviceProfileAction.class);
 
     private long deviceid;
     private int userid;
@@ -89,11 +92,11 @@ public class AddDeviceProfileAction extends ActionSupport {
 //			}
 //		}
         
-        System.out.println("Going with "+actionResult);
+        log.info("Going with "+actionResult);
        }catch(Exception e){
-         System.out.println("Ye bat hai "+e);
+         log.info("Ye bat hai "+e);
        }
-        System.out.println("actionResult==>"+actionResult);
+        log.info("actionResult==>"+actionResult);
         return actionResult;
     }
 

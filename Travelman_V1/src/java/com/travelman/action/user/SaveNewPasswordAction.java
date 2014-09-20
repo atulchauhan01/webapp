@@ -6,15 +6,18 @@ package com.travelman.action.user;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.user.UserBusinesService;
 import com.travelman.domain.User;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author technolife
  */
 public class SaveNewPasswordAction extends ActionSupport {
+    private Logger log=Logger.getLogger(SaveNewPasswordAction.class);
 
     private String currentUserName;
     private String password;
@@ -47,7 +50,7 @@ public class SaveNewPasswordAction extends ActionSupport {
             }
         } else {
             if(actionResult.equalsIgnoreCase("psdInput"))  {
-                System.out.println("ActionResult--->"+actionResult);
+                log.info("ActionResult--->"+actionResult);
                 addFieldError("newPassword", "Please insert correct password. ");   
                 if(user.getUprofile()==3){
                 actionResult="inputAdmin";

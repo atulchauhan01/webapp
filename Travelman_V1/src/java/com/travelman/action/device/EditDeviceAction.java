@@ -4,13 +4,16 @@ import java.util.*;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.device.DeviceBusinesService;
 import com.travelman.data.service.DataService;
 import com.travelman.domain.User;
 import com.travelman.domain.Device;
+import org.apache.log4j.Logger;
 
 
 public class EditDeviceAction extends ActionSupport{
+    private Logger log=Logger.getLogger(EditDeviceAction.class);
 	 
     private long deviceid;
     private int userid;
@@ -34,7 +37,7 @@ public class EditDeviceAction extends ActionSupport{
 
         DeviceBusinesService deviceBusinessService = new DeviceBusinesService();
 //        String str = deviceBusinessService.validateDevice(dsim_num, deviceid, userid, user);
-//           System.out.println("going with validation"+str);
+//           log.info("going with validation"+str);
 //        if(str.equals("sim"))
 //        {
 //           addFieldError("dsim_num", "SIM already in used.");
@@ -62,9 +65,9 @@ public class EditDeviceAction extends ActionSupport{
      //  }
       //     }
         
-        System.out.println("Going with ......... "+actionResult);
+        log.info("Going with ......... "+actionResult);
        }catch(Exception e){
-         System.out.println("Ye bat hai "+e);
+         log.info("Ye bat hai "+e);
        }
         return actionResult;
     }

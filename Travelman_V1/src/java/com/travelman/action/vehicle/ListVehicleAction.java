@@ -5,11 +5,14 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.vehicle.VehicleBusinesService;
 import com.travelman.domain.User;
 import com.travelman.domain.Vehicle;
+import org.apache.log4j.Logger;
 
 public class ListVehicleAction extends ActionSupport {
+    private Logger log=Logger.getLogger(ListVehicleAction.class);
 
 	private List<Vehicle> list;
 	private String currentUserName;
@@ -28,9 +31,9 @@ public class ListVehicleAction extends ActionSupport {
 		list = vehicleBusinesService.listVehicle(user.getUserId(),user.getUprofile());
                 
                 
-                System.out.println(user.getUserId()+">>>>>>>>>>>>>>>>>>>userId");
+                log.info(user.getUserId()+">>>>>>>>>>>>>>>>>>>userId");
 		for (Vehicle vehicle : list) {
-			System.out.println(vehicle.getVn());
+			log.info(vehicle.getVn());
 		}
 		currentUserName=user.getFname()+" "+user.getLname()+" [G]";
 		return "group";

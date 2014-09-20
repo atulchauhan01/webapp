@@ -8,15 +8,18 @@ import java.util.*;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import com.travelman.data.connection.DBConnection;
 import com.travelman.data.service.DataService;
 import com.travelman.domain.TrackData;
 import com.travelman.domain.User;
+import org.apache.log4j.Logger;
 
 /**
  * @author ssingh
  *
  */
 public class LoginAction extends ActionSupport implements ModelDriven {
+    private Logger log=Logger.getLogger(LoginAction.class);
 
     private String uemail;
     private String password;
@@ -39,12 +42,12 @@ public class LoginAction extends ActionSupport implements ModelDriven {
                 password = paramValueArray[0];
                 paramValueArray = (String[]) param.get("uemail");
                 uemail = paramValueArray[0];
-                System.out.println("In LoginAction : " + uemail + "   " + password);
+                log.info("In LoginAction : " + uemail + "   " + password);
             }            
             
             // User user = dataService.getUserInfo(getUserId());
             User user = dataService.authenticateUser(uemail, password);
-            System.out.println("user object  ::: "+user);
+            log.info("user object  ::: "+user);
             //Put User to session.
             Map<String, Object> session = ActionContext.getContext().getSession();
             session.put("USER", user);
@@ -56,7 +59,7 @@ public class LoginAction extends ActionSupport implements ModelDriven {
 
                     if (user.getUemail().equalsIgnoreCase(uemail) && user.getPassword().equals(password)) {
                         //valid user.
-                        System.out.println("user profile in Login action -->" + user.getUprofile());
+                        log.info("user profile in Login action -->" + user.getUprofile());
                         setList(dataService.getLiveLocation(user));
                         // setLatitude(TrackData.getLatitudeList());
                         // setLongitude(TrackData.getLongitudeList());
@@ -79,7 +82,7 @@ public class LoginAction extends ActionSupport implements ModelDriven {
                         }
                         //actionResult = SUCCESS;
                     } else {
-                        System.out.println("invalid user.");
+                        log.info("invalid user.");
                         actionResult = INPUT;
                         addFieldError("uemail", "Invalid email ID or password");
                     }
@@ -88,10 +91,10 @@ public class LoginAction extends ActionSupport implements ModelDriven {
 
                 actionResult = INPUT;
                 addFieldError("uemail", "Invalid email ID or password");
-                System.out.println("Invalid email ID or password");
+                log.info("Invalid email ID or password");
             }
         } catch (Exception e) {
-            System.out.println("Exception ::::::::  "+e);
+            log.info("Exception ::::::::  "+e);
         }
         return actionResult;
 

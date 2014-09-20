@@ -10,11 +10,13 @@ import com.travelman.domain.TrackData;
 import com.travelman.domain.User;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.jasper.tagplugins.jstl.core.ForEach;
+import org.apache.log4j.Logger;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.pojoxml.core.PojoXml;
 import org.pojoxml.core.PojoXmlFactory;
 
 public class TrackingAjaxAction extends ActionSupport implements ServletResponseAware  {
+    private Logger log=Logger.getLogger(TrackingAjaxAction.class);
 
     private int vehicleid;
     private User user;
@@ -31,7 +33,7 @@ public class TrackingAjaxAction extends ActionSupport implements ServletResponse
     
     public String getLatestVehicleData() {
         
-        System.out.println("========In getLatestVehicleData()===========");
+        log.info("========In getLatestVehicleData()===========");
         String actionResult = "";
         setSession(ActionContext.getContext().getSession());
         setUser((User) getSession().get("USER"));
@@ -88,7 +90,7 @@ public class TrackingAjaxAction extends ActionSupport implements ServletResponse
         builder.append(pojoXml.getXml(trackData).replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", ""));    
         }
         builder.append("</Data>");
-        System.out.println(builder);
+        log.info(builder);
         response.setContentType("text/xml");
         response.setHeader("Cache-Control", "no-cache");
         try {

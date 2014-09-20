@@ -2,6 +2,7 @@
 package com.travelman.action.billing;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.billing.BillBusinesService;
 import com.travelman.domain.Bill;
 import com.travelman.domain.Payment;
@@ -10,9 +11,11 @@ import com.travelman.domain.SmsPlan;
 import com.travelman.domain.User;
 import java.util.List;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
  
 public class GenerateBillAction extends ActionSupport{
+    private Logger log=Logger.getLogger(GenerateBillAction.class);
         
     private String currentUserName;
     private  List<Long> list_DeviceId;
@@ -42,32 +45,32 @@ public class GenerateBillAction extends ActionSupport{
          list_DeviceId=billBusinessService.getDeviceIdList();
          
         for(long deviceid : getList_DeviceId()){
-          System.out.println("Action Device ID: "+deviceid); 
+          log.info("Action Device ID: "+deviceid); 
           
           //getting plan information to calculate current bill amount
            plan=new Plan();
           plan=billBusinessService.getPlanInfo(deviceid);
           planname=plan.getPlanname();
           rental=plan.getRental();
-            //System.out.println("planname--->"+planname);
-            //System.out.println("rental--->"+rental);    
+            //log.info("planname--->"+planname);
+            //log.info("rental--->"+rental);    
           
           //getting previous month bill amount
           bill=new Bill();
           bill=billBusinessService.getPreviousBillInfo(deviceid);
-            System.out.println("amount befort due date"+bill.getAmtBeforeDueDate());
+            log.info("amount befort due date"+bill.getAmtBeforeDueDate());
             
             //geeting sms Charges
             smsPlan=new SmsPlan();
             smsPlan=billBusinessService.getSmsPlanInfo(deviceid);
-            System.out.println("Sms Plan Amount--->"+smsPlan.getSmsAmount());
+            log.info("Sms Plan Amount--->"+smsPlan.getSmsAmount());
             
             //getrting payment Info
             payment=new Payment();
             payment=billBusinessService.getPaymentInfo(deviceid);
-            System.out.println("Payment Received--->"+payment.getReceivedAmt());
-            System.out.println("Payment Discount--->"+payment.getDiscount());
-            System.out.println("Payment Discount--->"+payment.getCouponDiscount());
+            log.info("Payment Received--->"+payment.getReceivedAmt());
+            log.info("Payment Discount--->"+payment.getDiscount());
+            log.info("Payment Discount--->"+payment.getCouponDiscount());
             
                     
           

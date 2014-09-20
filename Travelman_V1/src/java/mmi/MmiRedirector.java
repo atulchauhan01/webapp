@@ -40,7 +40,7 @@ public class MmiRedirector extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
     throws ServletException, IOException {
-      // System.out.println("i m in mmi redirector");
+      // log.info("i m in mmi redirector");
 
         response.setContentType("text/html; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -57,7 +57,7 @@ public class MmiRedirector extends HttpServlet {
 
         String mireoResponse = sb.toString();
         int start = 0;
-    //    System.out.println("Mireo response:"+mireoResponse);
+    //    log.info("Mireo response:"+mireoResponse);
         /* https deployment */
 
         /*if(mireoResponse.substring(0,8).equals("https://")){
@@ -84,7 +84,7 @@ public class MmiRedirector extends HttpServlet {
           /* http */
           URL url = new URL("http://"+server_name+page_name);
 
-         // System.out.println("URL:"+url.getPath());
+         // log.info("URL:"+url.getPath());
           URLConnection conn = url.openConnection();
           conn.setDoOutput(true);
           OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());

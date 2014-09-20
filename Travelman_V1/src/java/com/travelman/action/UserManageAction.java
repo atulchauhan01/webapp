@@ -7,12 +7,14 @@ import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.travelman.data.service.DataService;
 import com.travelman.domain.User;
+import org.apache.log4j.Logger;
 
 /**
  * @author ssingh
  *
  */
 public class UserManageAction extends ActionSupport {
+    private Logger log=Logger.getLogger(UserManageAction.class);
 
 	/**
 	 * 
@@ -76,7 +78,7 @@ public class UserManageAction extends ActionSupport {
 		ActionContext.getContext().getSession().put("User",	user);
 		
 		
-		System.out.println("Travel Man");
+		log.info("Travel Man");
 		if((user != null && user.getPassword() != null) && user.getPassword().equals(getPassword())){
 		
 			

@@ -10,12 +10,14 @@ package com.travelman.action.device;
  */
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.device.DeviceBusinesService;
 import com.travelman.domain.*;
 import java.util.*;
+import org.apache.log4j.Logger;
 
-public class SelectDeviceForEdit extends ActionSupport
-{
+public class SelectDeviceForEdit extends ActionSupport{
+    private Logger log=Logger.getLogger(SelectDeviceForEdit.class);
 
     private long deviceid;
     private String currentUserName;
@@ -30,7 +32,7 @@ public class SelectDeviceForEdit extends ActionSupport
         User user = (User) session.get("USER");
 
         DeviceBusinesService deviceBusinessService = new DeviceBusinesService();
-        System.out.println(deviceid+"=deviceId********SelectDeviceForEdit");
+        log.info(deviceid+"=deviceId********SelectDeviceForEdit");
         String str = deviceBusinessService.selectDeviceForEdit(deviceid, device);
 
         if(str.equals("ok"))
@@ -55,9 +57,9 @@ public class SelectDeviceForEdit extends ActionSupport
           actionResult = str;
         }
 
-        System.out.println("Going with "+actionResult);
+        log.info("Going with "+actionResult);
        }catch(Exception e){
-         System.out.println("Ye bat hai "+e);
+         log.info("Ye bat hai "+e);
        }
         return actionResult;
     }

@@ -4,11 +4,14 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.vehicle.VehicleBusinesService;
 import com.travelman.data.connection.DBConnection;
 import com.travelman.domain.User;
+import org.apache.log4j.Logger;
 
 public class AddExistingVehicle extends ActionSupport{
+    private Logger log=Logger.getLogger(AddExistingVehicle.class);
         
         private String currentUserName;
 	private long deviceid;
@@ -27,7 +30,7 @@ public class AddExistingVehicle extends ActionSupport{
 		 	VehicleBusinesService vehicleBusinessService = new VehicleBusinesService();
 		 	
                         str = vehicleBusinessService.addExistingVehicle(vehicleid,userid );
-                        System.out.println(str);
+                        log.info(str);
                         System.err.println(getVehicleid()+"<---vehicleid");
                         System.err.println(getUserid()+"<---userid");
 		 	

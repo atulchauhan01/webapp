@@ -4,12 +4,15 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.vehicle.VehicleBusinesService;
 import com.travelman.domain.User;
 import com.travelman.domain.Vehicle;
 import java.util.Date;
+import org.apache.log4j.Logger;
 
 public class AddVehicleProfileAction extends ActionSupport{
+    private Logger log=Logger.getLogger(AddVehicleProfileAction.class);
 	private long vehicleId;
 	private String vn;
 	private String registration_date;
@@ -47,8 +50,8 @@ public class AddVehicleProfileAction extends ActionSupport{
 			  vehicle.setUserid(0);
                           vehicle.setDeviceid(getDeviceid());
                           vehicle.setActive(1);
-                          System.out.println(getDeviceid()+"!!!!!!!!!!!!!!!!!!!!!");
-                          System.out.println(getVn()+"vvvvvvvvvvv!!!!!!!!!!!!!!!!!!!!!");
+                          log.info(getDeviceid()+"!!!!!!!!!!!!!!!!!!!!!");
+                          log.info(getVn()+"vvvvvvvvvvv!!!!!!!!!!!!!!!!!!!!!");
 			  getVehicleBusinesService().createVehicle(vehicle);
 			  if (user.getUprofile() == 2) {
 				actionResult = "group";

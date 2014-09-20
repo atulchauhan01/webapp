@@ -4,10 +4,13 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.user.UserBusinesService;
 import com.travelman.domain.User;
+import org.apache.log4j.Logger;
 
 public class SaveEditUserAction extends ActionSupport {
+    private Logger log=Logger.getLogger(SaveEditUserAction.class);
 
 	/**
 	 * 
@@ -89,7 +92,7 @@ public class SaveEditUserAction extends ActionSupport {
                 user.setUprofile(uprofile);
 		user.setActive(getActive());
 		
-		System.out.println(userId+"  userId");		
+		log.info(userId+"  userId");		
 	           userBusinesService.updateUser(user,userId_Owner);
 	
 			if (userObj.getUprofile() == 2) {

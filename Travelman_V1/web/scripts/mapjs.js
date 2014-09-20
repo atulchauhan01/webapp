@@ -1,29 +1,45 @@
-var context = 'Travelman_V1';
-////var map;
-//var arrMarkers = [];
-//var arrInfoWindows = [];
-//function mapInit() {
-//    alert(2);
-//    var centerCoord = new google.maps.LatLng(24.173148, 78.042069);
-//    var mapOptions = {
-//        zoom: 5,
-//        center: centerCoord,
-//        mapTypeId: google.maps.MapTypeId.ROADMAP
-//    };
-//    map = new google.maps.Map(document.getElementById("map"), mapOptions);
-//    calcRoute();
-//}
-//
-//$(function() {
-//    alert(1);
-//    mapInit();
-//    $("#markers a").live("click", function() {
-//        var i = $(this).attr("rel");
-//        arrInfoWindows[i].open(map, arrMarkers[i]);
-//
-//    });
-//
-//});
+var context = 'travelman';
+/*
+ var map;
+ var arrMarkers = [];
+ var arrInfoWindows = [];
+ function mapInit() {
+ alert(2);
+ var centerCoord = new google.maps.LatLng(24.173148, 78.042069);
+ var mapOptions = {
+ zoom: 5,
+ center: centerCoord,
+ mapTypeId: google.maps.MapTypeId.ROADMAP
+ };
+ map = new google.maps.Map(document.getElementById("map"), mapOptions);
+ calcRoute();
+ }
+ */
+/*
+ $(function() {
+ alert(1);
+ mapInit();
+ $("#markers a").live("click", function() {
+ var i = $(this).attr("rel");
+ arrInfoWindows[i].open(map, arrMarkers[i]);
+ 
+ });
+ 
+ });
+ */
+
+var map;
+var arrMarkers = [];
+var arrInfoWindows = [];
+function mapInit() {
+    var centerCoord = new google.maps.LatLng(24.173148, 78.042069);
+    var mapOptions = {
+        zoom: 5,
+        center: centerCoord,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
+    };
+    map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+}
 
 var timerID = null;
 var timerRunning = false;
@@ -133,8 +149,8 @@ if (window.XMLHttpRequest) {
         var marker = new google.maps.Marker({
             position: point,
             map: map,
-            icon: icons[icontype],
-            title: "Hello!"
+            icon: icons[icontype]//,
+            //title: "Hello!"
         });
 
         markersArray.push(marker);
@@ -172,7 +188,8 @@ if (window.XMLHttpRequest) {
 
     // A function to read the data
     function readMap(url) {
-        url = "/Travelman_V1/trackingAjax";
+        //url = "/Travelman_V1/trackingAjax";
+        url = "/"+context+"/trackingAjax";
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
             xmlhttp = new XMLHttpRequest();
         } else {
@@ -189,23 +206,25 @@ if (window.XMLHttpRequest) {
                 gmarkers = [];
                 for (var i = 0; i < markers.length; i++) {
                     // obtain the attribues of each marker
-              
+
                     var lat = parseFloat(markers[i].getElementsByTagName("latitudeList")[0].childNodes[0].nodeValue);
                     var lng = parseFloat(markers[i].getElementsByTagName("longitudeList")[0].childNodes[0].nodeValue);
-                    
+
                     //logic to get location
                     var deviceId = parseFloat(markers[i].getElementsByTagName("deviceid")[0].childNodes[0].nodeValue);
-                    var geoCodeUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=false";
+                    var geoCodeUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=false";
                     //alert(deviceId);
-                    getLocation(deviceId, geoCodeUrl);
-                    
+                    //getLocation(deviceId, geoCodeUrl);
+
                     var icon_type = 3;
                     if (markers[i].getElementsByTagName("acc_status")[0].childNodes[0].nodeValue == 'OFF') {
                         icon_type = 2;
                     }
                     // var icon_type = parseFloat(markers[i].getAttribute("acc_status"));
                     var point = new google.maps.LatLng(lat, lng);
-                    var html = "<a href=\"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=true\">Location</a>";
+                    //var html = "<a href=\"http://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&sensor=false\">Location</a>";
+                    var html = '<a href="javascript:getLocationFromLatLng(' + deviceId + ', ' + lat + ',' + lng + ')">Refresh Location</a>';
+                    //alert(html);
                     //markers[i].getAttribute("html");
                     var label = "Label Value ";//markers[i].getAttribute("label");
                     //var category = markers[i].getAttribute("category");
@@ -229,66 +248,60 @@ if (window.XMLHttpRequest) {
 }
 
 // A function to get location from google / parse json
-    function getLocation(deviceId, geoCodeUrl) {
-        //alert("locationValue()");
-        //url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=28.79012,79.013756&sensor=true";
-        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            // code for IE6, IE5
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.onreadystatechange = function() {
-            if (xmlhttp.readyState === 4) {
-                //alert("xmlhttp.readyState ::: "+xmlhttp.readyState)
-                //alert("xmlhttp.readyState ::: "+xmlhttp.status);
-                //alert(locationValue[1].formatted_address);
-                if (xmlhttp.status === 200) {                    
-                    var locationValue = xmlhttp.responseText;
-                    //alert(locationValue);
-                    var geoCodeResponse = JSON.parse(locationValue);
-                    document.getElementById(deviceId).value=geoCodeResponse.results[0].formatted_address;                    
-                   // alert(geoCodeResponse.results[0].formatted_address); 
-		} else {
-                    alert('There was a problem with the request! Refresh the page');
-		}               
-
-            }
-        };
-        xmlhttp.open("GET", geoCodeUrl, true);
-        xmlhttp.send();
+function getLocation(deviceId, geoCodeUrl) {
+    alert("locationValue()");
+    //url = "http://maps.googleapis.com/maps/api/geocode/json?latlng=28.79012,79.013756&sensor=true";
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState === 4) {
+            //alert("xmlhttp.readyState ::: "+xmlhttp.readyState)
+            //alert("xmlhttp.readyState ::: "+xmlhttp.status);
+            //alert(locationValue[1].formatted_address);
+            if (xmlhttp.status === 200) {
+                var locationValue = xmlhttp.responseText;
+                //alert(locationValue);
+                var geoCodeResponse = JSON.parse(locationValue);
+                document.getElementById(deviceId).value = geoCodeResponse.results[0].formatted_address;
+                // alert(geoCodeResponse.results[0].formatted_address);
+            } else {
+                alert('There was a problem with the request! Refresh the page');
+            }
 
-//function newXMLHttpRequest() {
-//    var xmlreq = false;
-//    // Create XMLHttpRequest object in non-Microsoft browsers
-//    if (window.XMLHttpRequest) {
-//    xmlreq = new XMLHttpRequest();
-//
-//    } else if (window.ActiveXObject) {
-//
-//    try {
-//      // Try to create XMLHttpRequest in later versions
-//      // of Internet Explorer
-//      xmlreq = new ActiveXObject("Msxml2.XMLHTTP");
-//
-//    } catch (e1) {
-//
-//      // Failed to create required ActiveXObject
-//
-//      try {
-//        // Try version supported by older versions
-//        // of Internet Explorer
-//
-//        xmlreq = new ActiveXObject("Microsoft.XMLHTTP");
-//
-//      } catch (e2) {
-//        // Unable to create an XMLHttpRequest by any means
-//        xmlreq = false;
-//      }
-//    }
-//    }
-//
-//return xmlreq;
-//}
+        }
+    };
+    xmlhttp.open("GET", geoCodeUrl, true);
+    xmlhttp.send();
+}
 
+function getLocationFromLatLng(deviceId, lat, lng) {
+    //alert("getLocationFromLatLng()11");
+    var geoCodeUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&sensor=false";
+    //var geoCodeUrl = "http://maps.googleapis.com/maps/api/geocode/json?latlng=26.066947,91.459674&sensor=false"
+    if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        // code for IE6, IE5
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState === 4) {
+            if (xmlhttp.status === 200) {
+                var locationValue = xmlhttp.responseText;
+                //alert(locationValue);
+                var geoCodeResponse = JSON.parse(locationValue);
+                document.getElementById(deviceId).value = geoCodeResponse.results[0].formatted_address;
+                // alert(geoCodeResponse.results[0].formatted_address);
+            } else {
+                alert('There was a problem with the request! Refresh the page');
+            }
+
+        }
+    };
+    xmlhttp.open("GET", geoCodeUrl, true);
+    xmlhttp.send();
+}

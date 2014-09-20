@@ -3,11 +3,14 @@ package com.travelman.action.user;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.user.UserBusinesService;
 import com.travelman.domain.User;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 public class EditUserProfileAction extends ActionSupport implements ModelDriven<User> {
+    private Logger log=Logger.getLogger(EditUserProfileAction.class);
 	/**
 	 * 
 	 */
@@ -70,9 +73,9 @@ public class EditUserProfileAction extends ActionSupport implements ModelDriven<
 		setCurrentUserName(userObj.getFname()+" "+userObj.getLname());
 		
                 int userId_Owner = userObj.getUserId();
-		System.out.println(userId_Owner+"Owner***************");
+		log.info(userId_Owner+"Owner***************");
 		
-                System.out.println(getUserId()+"User@@@@@@@@@@@@@@@");
+                log.info(getUserId()+"User@@@@@@@@@@@@@@@");
                 
 		setUser(userBusinesService.getUser(uemail,userId_Owner));
 	

@@ -103,9 +103,9 @@ public class CouponPlanAction extends ActionSupport {
                // coupon.setNoOfUses(noOfUses);
                 coupon.setNumberOfCoupons(numberOfCoupons);
                 coupon.setAssign(assign);
-               // System.out.println("here");
+               // log.info("here");
                 coupon.setValidTill(validTill);
-              //  System.out.println("there");
+              //  log.info("there");
                 str="definingpreassigned_coupons";
                 billBusinesService.SaveCoupons(coupon,str);
 
@@ -123,9 +123,9 @@ public class CouponPlanAction extends ActionSupport {
                // coupon.setNoOfUses(noOfUses);
                 coupon.setNumberOfCoupons(numberOfCoupons);
                 coupon.setAssign(assign);
-               // System.out.println("here");
+               // log.info("here");
                 coupon.setValidTill(validTill);
-              //  System.out.println("there");
+              //  log.info("there");
                str="definingpostassigned_coupons";
                 billBusinesService.SaveCoupons(coupon,str);
 

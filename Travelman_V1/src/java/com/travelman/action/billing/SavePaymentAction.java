@@ -2,15 +2,18 @@ package com.travelman.action.billing;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.billing.BillBusinesService;
 import com.travelman.domain.Payment;
 import com.travelman.domain.User;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import org.apache.log4j.Logger;
 
 
 public class SavePaymentAction extends ActionSupport{
+    private Logger log=Logger.getLogger(SavePaymentAction.class);
     private String currentUserName;
     private int accNo;
     private long deviceId;
@@ -37,7 +40,7 @@ public class SavePaymentAction extends ActionSupport{
         Map<String,Object> session =ActionContext.getContext().getSession();
         User user=(User)session.get("USER");
         setCurrentUserName(user.getFname()+" "+user.getLname());
-        System.out.println("111");
+        log.info("111");
         billBusinessService=new BillBusinesService();
         Payment payment=new Payment();
         payment.setAccNo(accNo);

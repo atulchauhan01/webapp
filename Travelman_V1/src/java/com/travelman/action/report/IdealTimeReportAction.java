@@ -5,11 +5,14 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.report.ReportBusinesService;
 import com.travelman.domain.Report;
 import com.travelman.domain.User;
+import org.apache.log4j.Logger;
 
 public class IdealTimeReportAction extends ActionSupport {
+    private Logger log=Logger.getLogger(IdealTimeReportAction.class);
 
     /**
      * 
@@ -39,7 +42,7 @@ public class IdealTimeReportAction extends ActionSupport {
 
         String actionResult = "";
         reportBusinesService = new ReportBusinesService();
-        System.out.println(user.getFname() + startDate + endDate + vregistration_num);
+        log.info(user.getFname() + startDate + endDate + vregistration_num);
         list = reportBusinesService.createIdealTime(user, startDate, endDate, vregistration_num);
         if (list != null) {
             // latitude = Report.getLatitudeList();

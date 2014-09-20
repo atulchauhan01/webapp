@@ -2,12 +2,14 @@ package com.travelman.action.device;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+import com.travelman.action.LoginAction;
 import com.travelman.business.service.device.DeviceBusinesService;
 import com.travelman.data.service.DataService;
 import com.travelman.domain.User;
 import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
 
@@ -17,6 +19,7 @@ import org.omg.PortableServer.REQUEST_PROCESSING_POLICY_ID;
  *
  */
 public class DeleteDeviceAction  extends ActionSupport {
+    private Logger log=Logger.getLogger(DeleteDeviceAction.class);
 
 
     private long deviceid;
@@ -44,7 +47,7 @@ public class DeleteDeviceAction  extends ActionSupport {
                     request.setAttribute("error", "Vehicle is assigned on this Device Id : "+deviceid+".First Delete Vehicle");
                     request.setAttribute("err", ctx);
                // addFieldError("deviceid", "vehicle exists");
-                    System.out.println("request value -->"+(String)(request.getAttribute("error")));
+                    log.info("request value -->"+(String)(request.getAttribute("error")));
                 actionResult = "input";
                 }else{	
 		

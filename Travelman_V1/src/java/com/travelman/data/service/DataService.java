@@ -28,8 +28,10 @@ import com.travelman.domain.Vehicle;
 import java.util.*;
 import java.text.*;
 import javax.sound.midi.SysexMessage;
+import org.apache.log4j.Logger;
 
 public class DataService {
+    private Logger log=Logger.getLogger(DataService.class);
 
     public List<Integer> getUseSubUserList(int userid, int uprofile) {
         String queryINSERTMSISDN = "";
@@ -39,7 +41,7 @@ public class DataService {
         } else {
             queryINSERTMSISDN = "select userid from user where ownerid='" + userid + "' or userid='" + userid + "'";
         }
-        System.out.println(queryINSERTMSISDN);
+        log.info(queryINSERTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -66,12 +68,12 @@ public class DataService {
                 device.setDsim_num(m_ResultSet.getString("dsim_num"));
                 actionResult = "ok";
             } else {
-                System.out.println("if fails -->>selectDeviceForEdit");
+                log.info("if fails -->>selectDeviceForEdit");
                 actionResult = "SQLException";
             }
         } catch (SQLException e) {
             actionResult = "SQLException";
-            System.out.println(e + "selectDeviceForEdit");
+            log.info(e + "selectDeviceForEdit");
         } finally {
             try {
                 if (m_Connection != null) {
@@ -102,7 +104,7 @@ public class DataService {
 
                 list_DeviceId.add(m_ResultSet.getLong("deviceid"));
 
-                System.out.println("Deviceid : " + list_DeviceId.get(i));
+                log.info("Deviceid : " + list_DeviceId.get(i));
                 i++;
             }
         } catch (SQLException e) {
@@ -139,7 +141,7 @@ public class DataService {
                 try {
 
                     m_ResultSet = m_Statement.executeQuery("select deviceid from device where deviceid='" + deviceid + "'");
-                    System.out.println(m_ResultSet + "resultset");
+                    log.info(m_ResultSet + "resultset");
                     if (m_ResultSet.next()) {
 
                         actionResult = "deviceid";
@@ -155,7 +157,7 @@ public class DataService {
         } catch (SQLException e) {
             actionResult = "SQLException";
         }
-        System.out.println(actionResult + "  in data Service validate device");
+        log.info(actionResult + "  in data Service validate device");
         return actionResult;
     }
     private static Connection m_Connection = null;
@@ -206,7 +208,7 @@ public class DataService {
                     + "'" + device.getUserid() + "'"
                     + ")";
             int i = m_Statement.executeUpdate(str);
-            System.out.println(m_ResultSet + ".................");
+            log.info(m_ResultSet + ".................");
             if (i != 0) {
                 actionResult = "success";
             } else {
@@ -214,7 +216,7 @@ public class DataService {
             }
 
         } catch (SQLException e) {
-            System.out.println(e + "Device*******&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7");
+            log.info(e + "Device*******&&&&&&&&&&&&&&&&&&&&&&&&&&&&&7");
         } finally {
             try {
                 if (m_ResultSet != null) {
@@ -360,7 +362,7 @@ public class DataService {
         String queryUPDATEMSISDN = "update device set userid = '" + device.getUserid() + "',dtype = '" + device.getDtype() + "',diemi = '" + device.getDiemi() + "'"
                 + ",dsim_num = '" + device.getDsim_num() + "' where deviceid = '" + device.getDeviceId() + "'"
                 + "";
-        System.out.println(queryUPDATEMSISDN);
+        log.info(queryUPDATEMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -398,7 +400,7 @@ public class DataService {
         } else {
             queryLISTDEVICE = "select * from device where userid in(select userid from user where userid='" + userid + "' or ownerid='" + userid + "')";
         }
-        System.out.println(queryLISTDEVICE);
+        log.info(queryLISTDEVICE);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -417,7 +419,7 @@ public class DataService {
 
         } catch (SQLException e) {
             device_list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return device_list;
@@ -428,7 +430,7 @@ public class DataService {
 
         String queryLISTDEVICE = "select * from device where deviceid='" + deviceId + "'";
 
-        System.out.println(queryLISTDEVICE);
+        log.info(queryLISTDEVICE);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -447,7 +449,7 @@ public class DataService {
 
         } catch (SQLException e) {
             device_list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return device_list;
@@ -501,7 +503,7 @@ public class DataService {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
             int i = m_Statement.executeUpdate(queryREMOVEMSISDN);
-            System.out.println(i + "<<<<<<<<<<<<<<delete device>>>>>>>>>>>>>>>>");
+            log.info(i + "<<<<<<<<<<<<<<delete device>>>>>>>>>>>>>>>>");
             if (i != 0) {
                 actionResult = "delete";
             } else {
@@ -774,14 +776,14 @@ public class DataService {
                 + user.getPassword() + "','" + user.getUprofile() + "','"
                 + user.getOwnerid() + "','" + user.getActive() + "','"
                 + user.getAdmin_id() + "')";
-        System.out.println("************************" + queryCreateUser);
+        log.info("************************" + queryCreateUser);
 
         try {
 
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
             int i = m_Statement.executeUpdate(queryCreateUser);
-            System.out.println(i + "          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info(i + "          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -810,11 +812,11 @@ public class DataService {
      * @return
      */
     public User authenticateUser(String uemail, String password) {
-        System.out.println("authenticateUser() of DataService Class");
+        log.info("authenticateUser() of DataService Class");
 
         String queryFindUser = "select * from user where uemail='" + uemail
                 + "' and password='" + password + "'";
-        // System.out.println(queryFindUser);
+        // log.info(queryFindUser);
         User user = null;
         try {
             m_Connection = getDbConnection().getConnection();
@@ -901,7 +903,7 @@ public class DataService {
      * m_Statement.executeQuery(str); while(m_ResultSet.next()) { int
      * userid_0f_subUser = m_ResultSet.getInt("userid"); User subUser =
      * createUser(userid_0f_subUser); list.add(subUser); } }catch(SQLException
-     * e) { System.out.println(e); } return list; }
+     * e) { log.info(e); } return list; }
      * 
      * public List<Vehicle> addVehicle(int userid) { List<Vehicle> list = new
      * ArrayList<Vehicle>(); try { String str =
@@ -968,7 +970,7 @@ public class DataService {
                     + user.getUserId()
                     + "' )";
         }
-        System.out.println("vehicle ids--->>>" + collect_vehicleIDs);
+        log.info("vehicle ids--->>>" + collect_vehicleIDs);
         try {
 
             m_Connection = getDbConnection().getConnection();
@@ -989,7 +991,7 @@ public class DataService {
                     deviceIds += "union " + "select deviceid from vehicle where vehicleid='" + j + "'";
                 }
             }
-            System.out.println("deviceIds---->>>" + deviceIds);
+            log.info("deviceIds---->>>" + deviceIds);
             m_ResultSet = m_Statement.executeQuery(deviceIds);
             while (m_ResultSet.next()) {
                 list_deviceID.add(m_ResultSet.getLong("deviceid"));
@@ -1018,7 +1020,7 @@ public class DataService {
                             + " Phone_No = '" + i + "'";
                 }
             }
-            System.out.println(str);
+            log.info(str);
             SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
 
             m_ResultSet = m_Statement.executeQuery(str);
@@ -1028,7 +1030,7 @@ public class DataService {
                 trackData.setVregisteration_num(m_ResultSet.getString("vregisteration_num"));
                 trackData.setDeviceid(m_ResultSet.getString("Phone_No"));
                 Date date = m_ResultSet.getTimestamp("cv");
-                System.out.println("date -->>>  " + date);
+                log.info("date -->>>  " + date);
 
                 trackData.setDate(df.format(date));
 
@@ -1058,9 +1060,9 @@ public class DataService {
                 list_track_data.add(trackData);
             }
         } catch (SQLException sqe) {
-            System.out.println(sqe);
+            log.info(sqe);
         } catch (Exception e) {
-            System.out.println(e);
+            log.info(e);
         } finally {
             try {
                 if (m_ResultSet != null) {
@@ -1076,8 +1078,8 @@ public class DataService {
                 ex.printStackTrace();
             }
         }
-        //System.out.println("Value of  : " + trackData.getLatitudeList());
-        // System.out.println("Value of  : " + trackData.getLongitudeList());
+        //log.info("Value of  : " + trackData.getLatitudeList());
+        // log.info("Value of  : " + trackData.getLongitudeList());
         return list_track_data;
     }
 
@@ -1109,7 +1111,7 @@ public class DataService {
 
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
             m_ResultSet = m_Statement.executeQuery(m_Query);
-            System.out.println(m_Query);
+            log.info(m_Query);
 
             while (m_ResultSet.next()) {
 
@@ -1143,7 +1145,7 @@ public class DataService {
             }
 
         } catch (SQLException sqe) {
-            System.out.println(sqe);
+            log.info(sqe);
         } finally {
             try {
                 if (m_ResultSet != null) {
@@ -1165,13 +1167,13 @@ public class DataService {
     public void createVehicle(Vehicle vehicle) {
 
         String queryInsert = "insert into vehicle values('" + vehicle.getVehicleId() + "','" + vehicle.getVn() + "','" + vehicle.getRegistration_date() + "','" + vehicle.getVmake() + "','" + vehicle.getVmodel() + "','" + vehicle.getVfuel_type() + "','" + vehicle.getFleet() + "','" + vehicle.getUserid() + "','" + vehicle.getDeviceid() + "','" + vehicle.getActive() + "')";
-        System.out.println(queryInsert + "*****************************");
+        log.info(queryInsert + "*****************************");
         try {
 
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
             int i = m_Statement.executeUpdate(queryInsert);
-            System.out.println(i + "          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            log.info(i + "          @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -1222,7 +1224,7 @@ public class DataService {
                 vehicle_list.add(vehicle);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            log.info(e);
         }
         return vehicle_list;
     }
@@ -1245,7 +1247,7 @@ public class DataService {
                 user_list.add("Mr. " + fname + " " + lname + "," + email);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            log.info(e);
         }
         return user_list;
     }
@@ -1280,7 +1282,7 @@ public class DataService {
                     + "(select userid from user where ownerid ='" + userid + "'  or userid ='" + userid + "')"
                     + " and deviceid not in(select deviceid from vehicle )";
         }
-        System.out.println(queryLISTMSISDN);
+        log.info(queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1353,7 +1355,7 @@ public class DataService {
         } else {
             queryLISTMSISDN = "select userid from user where userid='" + userId + "' or ownerid='" + userId + "'";
         }
-        System.out.println(queryLISTMSISDN);
+        log.info(queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1387,7 +1389,7 @@ public class DataService {
     public Vehicle getVehicle(long vehicleId) {
         String queryLISTMSISDN = "select * from vehicle where vehicleid='" + vehicleId + "' ";
 
-        System.out.println(queryLISTMSISDN + "qqqqqqqqqqqqqqqqqqqqqq");
+        log.info(queryLISTMSISDN + "qqqqqqqqqqqqqqqqqqqqqq");
 
         Vehicle vehicle = new Vehicle();
         try {
@@ -1441,7 +1443,7 @@ public class DataService {
             m_Statement = m_Connection.createStatement();
             m_ResultSet = m_Statement.executeQuery("select deviceid from vehicle where deviceid='" + deviceid
                     + "' and vehicleid='" + vehicleId + "'");
-            System.out.println(m_ResultSet + "ResultSet");
+            log.info(m_ResultSet + "ResultSet");
             if (m_ResultSet.next()) {
                 actionResult = "ok";
             } else {
@@ -1484,7 +1486,7 @@ public class DataService {
                 + vehicle.getVn() + "',vmake='" + vehicle.getVmake() + "',vmodel='" + vehicle.getVmodel() + "',vfuel_type='"
                 + vehicle.getVfuel_type() + "' where vehicleid='" + vehicle.getVehicleId() + "' ";
 
-        System.out.println(queryEDITMSISDN + "!!!!!!!!!!!!!!!!!!!!!!");
+        log.info(queryEDITMSISDN + "!!!!!!!!!!!!!!!!!!!!!!");
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1554,7 +1556,7 @@ public class DataService {
                     + "(select vehicleid from user_vehicle where userid in"
                     + "(select userid from user where ownerid ='" + userId + "' or userid ='" + userId + "'))";
         }
-        System.out.println(queryLISTMSISDN);
+        log.info(queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1595,7 +1597,7 @@ public class DataService {
                     + "(select vehicleid from user_vehicle where userid in"
                     + "(select userid from user where ownerid ='" + user.getUserId() + "' or userid ='" + user.getUserId() + "'))";
         }
-        System.out.println("vregistration_num " + str);
+        log.info("vregistration_num " + str);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1604,7 +1606,7 @@ public class DataService {
                 list.add(m_ResultSet.getString(1));
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            log.info(e);
         }
         return list;
     }
@@ -1623,7 +1625,7 @@ public class DataService {
                 + "' and '" + endDate + "' "
                 + "and Phone_No in( select deviceid from vehicle where"
                 + " vregisteration_num = '" + vregistration_num + "')";
-        System.out.println(trip_Query);
+        log.info(trip_Query);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1633,10 +1635,10 @@ public class DataService {
                 acc_status_List.add(Integer.parseInt(m_ResultSet.getString("Acc_Status")));
             }
             for (int m : message_id_List) {
-                // System.out.println("#####" + m);
+                // log.info("#####" + m);
             }
             for (int m : acc_status_List) {
-                //  System.out.println("#####" + m);
+                //  log.info("#####" + m);
             }
             int flag = 0;
             for (int k = 0; k < acc_status_List.size() - 1; k++) {
@@ -1670,7 +1672,7 @@ public class DataService {
                     SQL_trip += "or Message_ID='" + trip_row_num.next() + "'";
                 }
             }
-            System.out.println(SQL_trip);
+            log.info(SQL_trip);
             m_ResultSet = m_Statement.executeQuery(SQL_trip);
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
             int flag_flag = 0;
@@ -1679,9 +1681,9 @@ public class DataService {
                 java.util.Date start_d = null;
                 java.util.Date end_d = null;
                 Report report = new Report();
-                System.out.println("here in report..");
+                log.info("here in report..");
                 if (report.getLatitudeList() != null) {
-                    System.out.println("latitute is no null..");
+                    log.info("latitute is no null..");
 
                     if (report.getLatitudeList().equals("")) {
                         report.setLatitudeList(m_ResultSet.getString("Latitude"));
@@ -1689,14 +1691,14 @@ public class DataService {
                         report.setLatitudeList(report.getLatitudeList() + "," + m_ResultSet.getString("Latitude"));
                     }
                 } else {
-                    System.out.println("latitude is null...");
+                    log.info("latitude is null...");
                 }
                 if (report.getLongitudeList().equals("")) {
                     report.setLongitudeList(m_ResultSet.getString("Longitude"));
                 } else {
                     report.setLongitudeList(report.getLongitudeList() + "," + m_ResultSet.getString("Longitude"));
                 }
-                System.out.println("starting flag");
+                log.info("starting flag");
                 if (flag_flag == 0) {
                     flag_flag = 1;
                     if (flag == 1) {
@@ -1752,7 +1754,7 @@ public class DataService {
                         report.setDuration("Can not find");
 
                     }
-                    System.out.println("before report");
+                    log.info("before report");
                 }
                 list.add(report);
             }
@@ -1760,9 +1762,9 @@ public class DataService {
 
 
         } catch (SQLException e) {
-            System.out.println(e);
+            log.info(e);
         } catch (NoSuchElementException ne) {
-            System.out.println("############### EXCEPTION.. : " + ne);
+            log.info("############### EXCEPTION.. : " + ne);
         }
 
         return list;
@@ -1778,7 +1780,7 @@ public class DataService {
                 + "and Phone_No in ( select deviceid from vehicle where"
                 + " vregisteration_num = '" + vregistration_num + "') and speed=0.00 ";
 
-        System.out.println("***************" + history_Query);
+        log.info("***************" + history_Query);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1819,7 +1821,7 @@ public class DataService {
             }
 
         } catch (SQLException e) {
-            System.out.println(e + "**********************");
+            log.info(e + "**********************");
         } finally {
             try {
                 if (m_ResultSet != null) {
@@ -1866,7 +1868,7 @@ public class DataService {
             total_duration = year + " YEAR " + month + " MONTHS " + day + " DAYS "
                     + hour + " HOUR " + min + " MIN " + seconds + " SEC ";
         } catch (Exception e) {
-            System.out.println(e);
+            log.info(e);
         }
         return total_duration;
     }
@@ -1888,7 +1890,7 @@ public class DataService {
                 + "' and '" + endDate + "' "
                 + "and Phone_No in( select deviceid from vehicle where"
                 + " vregisteration_num = '" + vregistration_num + "')";
-        System.out.println("Idel time report--->" + trip_Query);
+        log.info("Idel time report--->" + trip_Query);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -1898,18 +1900,18 @@ public class DataService {
                 message_id_List.add(id);
                 date_List.put(id, m_ResultSet.getTimestamp("cv"));
 
-                // System.out.println(date_List.get(id));
+                // log.info(date_List.get(id));
                 speed_List.add(Double.parseDouble(m_ResultSet.getString("Speed")));
                 acc_status_List.add(Integer.parseInt(m_ResultSet.getString("Acc_Status")));
             }
             for (int m : message_id_List) {
-                // System.out.println("#####" + m);
+                // log.info("#####" + m);
             }
             for (double m : speed_List) {
-                // System.out.println("speed -->" + m);
+                // log.info("speed -->" + m);
             }
             for (int m : acc_status_List) {
-                //  System.out.println("#####" + m);
+                //  log.info("#####" + m);
             }
             int flag = 0;
             int flagDummy = 0;//use to get start and end point location
@@ -1917,18 +1919,18 @@ public class DataService {
             int end_Message_ID = 0;
 
             for (int k = 0; k < speed_List.size() - 1; k++) {
-                System.out.println("value of itration --->" + k);
+                log.info("value of itration --->" + k);
 
                 if (speed_List.get(k) > 0.00 && (speed_List.get(k + 1) == 0.00 && acc_status_List.get(k + 1) == 1)) {
-                    // System.out.println("hello in if");   
-                    System.out.println("value of k in if condition -->" + k);
-                    System.out.println("speed-->" + speed_List.get(k));
-                    // System.out.println("acc_status-->" + acc_status_List.get(k + 1));
+                    // log.info("hello in if");   
+                    log.info("value of k in if condition -->" + k);
+                    log.info("speed-->" + speed_List.get(k));
+                    // log.info("acc_status-->" + acc_status_List.get(k + 1));
                     /**
                      * Make it start point.
                      */
                     start_Message_ID = message_id_List.get(k + 1);
-                    System.out.println("start msg id  -->" + start_Message_ID);
+                    log.info("start msg id  -->" + start_Message_ID);
                     flagDummy = 1;
                     flag = 1; // Represent start point.
                     IdealTimeReportAction.setStart_location_flag(1);
@@ -1940,8 +1942,8 @@ public class DataService {
                             //Here , we got continous ideal condition. So , make it continue for find out end point of ideal session.
                         } else {
                             end_Message_ID = message_id_List.get(k);
-                            System.out.println("value of k in else condition -->" + k);
-                            System.out.println("End msg Id -->" + end_Message_ID);
+                            log.info("value of k in else condition -->" + k);
+                            log.info("End msg Id -->" + end_Message_ID);
                             flagDummy = 0;
                             // This is the end point of ideal session.
                         }
@@ -1953,48 +1955,48 @@ public class DataService {
                 Now check for Ideal duration sould be greater than 2 minutes.
                  */
                 try {
-                    //System.out.println(start_Message_ID + " End /" + end_Message_ID);
+                    //log.info(start_Message_ID + " End /" + end_Message_ID);
                     long t1 = 0L;
                     long t2 = 0L;
 
                     if (start_Message_ID != 0 && end_Message_ID != 0) {
-                        System.out.println(start_Message_ID + " End /" + end_Message_ID);
-                        System.out.println("here if start and end msgid not o");
+                        log.info(start_Message_ID + " End /" + end_Message_ID);
+                        log.info("here if start and end msgid not o");
                         t1 = date_List.get(end_Message_ID).getTime();
-                        System.out.println("value of t1-->" + t1);
+                        log.info("value of t1-->" + t1);
                         //.getTime();
-                        // System.out.println("there");
+                        // log.info("there");
                     } else {
                         t1 = 0L;
                     }
                     if (start_Message_ID != 0 && end_Message_ID != 0) {
                         t2 = date_List.get(start_Message_ID).getTime();
-                        System.out.println("value of t2-->" + t2);
+                        log.info("value of t2-->" + t2);
                     } else {
                         t2 = 0L;
                     }
                     if (start_Message_ID != 0 && end_Message_ID != 0) {
-                        System.out.println("value of time difference" + (t1 - t2));
-                        System.out.println("value of 2 min" + (2 * 60 * 1000));
+                        log.info("value of time difference" + (t1 - t2));
+                        log.info("value of 2 min" + (2 * 60 * 1000));
                         if ((t1 - t2) > (2 * 60 * 1000)) {
                             message_id_List_of_Ideal_Report.add(start_Message_ID);
                             message_id_List_of_Ideal_Report.add(end_Message_ID);
                             start_Message_ID = 0;
                             end_Message_ID = 0;
-                            System.out.println("in t2 - t2---->>>");
+                            log.info("in t2 - t2---->>>");
                             for (int m : message_id_List_of_Ideal_Report) {
-                                System.out.println("message_id_List_of_Ideal_Report-->" + m);
+                                log.info("message_id_List_of_Ideal_Report-->" + m);
                             }
 
                         } else {
-                            System.out.println("clean the value of start and end msg_id");
+                            log.info("clean the value of start and end msg_id");
                             start_Message_ID = 0;
                             end_Message_ID = 0;
                         }
                     }
                 } catch (NullPointerException e) {
                     e.printStackTrace();
-                    System.out.println(e + " : This is the reason.");
+                    log.info(e + " : This is the reason.");
                     break;
                 }
                 // stop 2 mincalculation logic
@@ -2010,7 +2012,7 @@ public class DataService {
                     SQL_trip += "or Message_ID='" + trip_row_num.next() + "'";
                 }
             }
-            System.out.println("SQL-Trip----->" + SQL_trip);
+            log.info("SQL-Trip----->" + SQL_trip);
             m_ResultSet = m_Statement.executeQuery(SQL_trip);
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
 
@@ -2044,9 +2046,9 @@ public class DataService {
                 list.add(report);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            log.info(e);
         } catch (NoSuchElementException ne) {
-            System.out.println("############### EXCEPTION.. : " + ne);
+            log.info("############### EXCEPTION.. : " + ne);
         }
         return list;
     }
@@ -2063,7 +2065,7 @@ public class DataService {
                 + "and Phone_No in "
                 + "(select deviceid from vehicle where vregisteration_num = '" + vregistration_num + "')";
 
-        System.out.println("***************" + history_Query);
+        log.info("***************" + history_Query);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2103,7 +2105,7 @@ public class DataService {
             }
 
         } catch (SQLException e) {
-            System.out.println(e + "**********************");
+            log.info(e + "**********************");
         } finally {
             try {
                 if (m_ResultSet != null) {
@@ -2127,14 +2129,14 @@ public class DataService {
 
         List<Report> list = new ArrayList<Report>();
         String overSpeedString = "select cv,location,Speed,Mileage_Hexa,Acc_Status,Availability_GPS from livemessagedata where cv between '" + startDate + "' and '2012/04/28 01:52:17' and Phone_No in (select deviceid from vehicle where vregisteration_num = '1')";
-        System.out.println("overSpeedString : "+overSpeedString);
+        log.info("overSpeedString : "+overSpeedString);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
             m_ResultSet = m_Statement.executeQuery(overSpeedString);
             SimpleDateFormat df = new SimpleDateFormat("dd-MMM-yyyy hh:mm:ss");
             while (m_ResultSet.next()) {
-                //System.out.println("******" + overSpeed + "speed  : " + Float.parseFloat(m_ResultSet.getString("speed")));
+                //log.info("******" + overSpeed + "speed  : " + Float.parseFloat(m_ResultSet.getString("speed")));
 
                 //checking condition in which speed id greater than overspeed
                 if (Float.parseFloat(m_ResultSet.getString("speed")) >= overSpeed) {
@@ -2148,15 +2150,15 @@ public class DataService {
                     //For setting values of status field
                     if (acc_status == 1 && speed == 0) {
                         report.setIgnition("Dormant");//vehile is start but not running(ignition on but speed == 0 )
-                        //System.out.println("dormant");
+                        //log.info("dormant");
                     } else {
                         if (acc_status == 1 && speed > 0) {
                             report.setIgnition("In Motion");//vehile in running (speed > o)
-                            // System.out.println("in motion");
+                            // log.info("in motion");
                         } else {
                             if (acc_status == 0) {
                                 report.setIgnition("Stop");//ignition off
-                                // System.out.println("stop");
+                                // log.info("stop");
                             }
                         }
                     }
@@ -2299,7 +2301,7 @@ public class DataService {
         } else {
             queryLISTMSISDN = "SELECT uemail from user where ownerid='" + userId + "' or userid='" + userId + "' ";
         }
-        System.out.println(queryLISTMSISDN);
+        log.info(queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2334,7 +2336,7 @@ public class DataService {
         String //queryLISTMSISDN = "select userid,fname,lname,baddress,haddress,utype,umobile,uemail,password,uprofile,active from trackman.user where userid='"+ userId +"' and ownerid='"+ userId_Owner +"' ";
                 queryLISTMSISDN = "select * from user where uemail='" + uemail + "' ";
 
-        System.out.println(queryLISTMSISDN + "qqqqqqqqqqqqqqqqqqqqqq");
+        log.info(queryLISTMSISDN + "qqqqqqqqqqqqqqqqqqqqqq");
 
         User user = new User();
         try {
@@ -2386,7 +2388,7 @@ public class DataService {
                 + "haddress='" + user.getHaddress() + "', utype='" + user.getUtype() + "', umobile='" + user.getUmobile() + "',uemail='" + user.getUemail() + "',"
                 + "password='" + user.getPassword() + "' , uprofile='" + user.getUprofile() + "',active='" + user.getActive() + "' where userid='" + user.getUserId() + "' ";
 
-        System.out.println(queryEDITMSISDN + "!!!!!!!!!!!!!!!!!!!!!!");
+        log.info(queryEDITMSISDN + "!!!!!!!!!!!!!!!!!!!!!!");
 
         try {
             m_Connection = getDbConnection().getConnection();
@@ -2415,9 +2417,9 @@ public class DataService {
     public String updatePassword(int userId, String password, String newPassword) {
 
         String querySELECTMSISDN = "select password from user where password='" + password + "' and userid='" + userId + "'";
-        System.out.println(querySELECTMSISDN + "<<-----");
+        log.info(querySELECTMSISDN + "<<-----");
         String queryUPDATE = "UPDATE user SET password='" + newPassword + "' WHERE userid='" + userId + "'";
-        System.out.println("update  password-->" + queryUPDATE);
+        log.info("update  password-->" + queryUPDATE);
         String result = "";
         try {
             m_Connection = getDbConnection().getConnection();
@@ -2461,7 +2463,7 @@ public class DataService {
                     + " select userid from user where ownerid = '" + userid + "' or userid = '" + userid + "'"
                     + ")"
                     + "";
-            System.out.println("list of devices" + insertQuery);
+            log.info("list of devices" + insertQuery);
         }
         try {
             m_Connection = getDbConnection().getConnection();
@@ -2471,7 +2473,7 @@ public class DataService {
                 list.add(m_ResultSet.getLong("deviceid"));
             }
         } catch (SQLException e) {
-            System.out.println("EditMgtDeviceAction  : " + e);
+            log.info("EditMgtDeviceAction  : " + e);
         }
         return list;
     }
@@ -2479,7 +2481,7 @@ public class DataService {
     public List<Vehicle> searchVehicle(String vn, int userId) {
         List<Vehicle> vehicle_list = new ArrayList<Vehicle>();
         String str = "select * from vehicle where vregisteration_num='" + vn + "'";
-        System.out.println("Search vehicle --->>>" + str);
+        log.info("Search vehicle --->>>" + str);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2500,7 +2502,7 @@ public class DataService {
                 vehicle_list.add(vehicle);
             }
         } catch (SQLException e) {
-            System.out.println(e);
+            log.info(e);
         }
         return vehicle_list;
     }
@@ -2512,7 +2514,7 @@ public class DataService {
         String queryLISTMSISDN = "select deviceid from device where userid='" + accNo + "'";
 
 
-        System.out.println(queryLISTMSISDN);
+        log.info(queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2552,7 +2554,7 @@ public class DataService {
                 + "','" + payment.getBranchName() + "','" + payment.getOfferName() + "','" + payment.getOfferAmt() + "','" + payment.getAdjusment()
                 + "','" + payment.getDiscount() + "','" + payment.getCouponNo() + "','" + payment.getCouponDiscount() + "')";
 
-        System.out.println(queryINSERTMSISDN);
+        log.info(queryINSERTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2583,7 +2585,7 @@ public class DataService {
         String queryINSERTMSISDN = "insert into defining_offer(offer_name,offer_amount,billing_cycle,assignto) values('" + ofr.getOfferName() + "'," + ofr.getOfferAmount() + "," + ofr.getBillingCycle() + "," + ofr.getAssignTo() + ")";
 
 
-        System.out.println(queryINSERTMSISDN);
+        log.info(queryINSERTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2615,7 +2617,7 @@ public class DataService {
         List<Long> list = new ArrayList();
 
         String queryLISTMSISDN = "select userid from user where uprofile=" + '2';
-        System.out.println(queryLISTMSISDN);
+        log.info(queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2709,7 +2711,7 @@ public class DataService {
         }
 
 
-        System.out.println(queryINSERTMSISDN + "--------------------" + coupon.getAssign());
+        log.info(queryINSERTMSISDN + "--------------------" + coupon.getAssign());
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2743,8 +2745,8 @@ public class DataService {
 
 
 
-        System.out.println(querySELECTMSISDN);
-        System.out.println(querySELECTSISDN1);
+        log.info(querySELECTMSISDN);
+        log.info(querySELECTSISDN1);
         try {
 
             m_Connection = getDbConnection().getConnection();
@@ -2764,14 +2766,14 @@ public class DataService {
 
             Statement m_Statement1 = m_Connection.createStatement();
             ResultSet m_ResultSet1 = m_Statement.executeQuery(querySELECTSISDN1);
-            System.out.println("List1 size " + list1.size());
+            log.info("List1 size " + list1.size());
             while (m_ResultSet1.next()) {
                 list2.add(m_ResultSet1.getLong(1));
                 list3.add(m_ResultSet1.getString(2));
 
             }
-            System.out.println("List2 size " + list2.size());
-            System.out.println("List3 size " + list3.size());
+            log.info("List2 size " + list2.size());
+            log.info("List3 size " + list3.size());
             int i = 0;
             int j = list1.size();
 
@@ -2779,13 +2781,13 @@ public class DataService {
             SimpleDateFormat sdf =
                     new SimpleDateFormat(DATE_FORMAT);
             Calendar c1 = Calendar.getInstance(); // today
-            //    System.out.println("Today is " + sdf.format(c1.getTime()));
+            //    log.info("Today is " + sdf.format(c1.getTime()));
 
             //  String queryINSERTMSISDN = "insert into assign_coupon values('" + list1.get(i) + "','" + list2.get(i) + "','" + list3.size() + "'," + sdf.format(c1.getTime()) + ")";
 
             while (j > 0) {
                 String queryINSERTMSISDN = "insert into assign_coupon_device values('" + list1.get(i) + "','" + list2.get(i) + "','" + list3.get(i) + "','" + sdf.format(c1.getTime()) + "')";
-                System.out.println(queryINSERTMSISDN);
+                log.info(queryINSERTMSISDN);
                 m_Statement.executeUpdate(queryINSERTMSISDN);
                 i++;
                 j--;
@@ -2794,7 +2796,7 @@ public class DataService {
             String queryINSERTMSISDN1 = "update definingpreassigned_coupons set STATUS_COUPON=" + 1;
 
 //int l=m_Statement.executeUpdate(queryINSERTMSISDN1);
-            System.out.println("Number of rows updated " + 1);
+            log.info("Number of rows updated " + 1);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -2820,7 +2822,7 @@ public class DataService {
         try {
 
             String s = "insert into defining_plan (PLAN_NAME,RENTAL,BILLING_CYCLE,FACILITIES,ASSIGNTO) values('" + plan.getPlanname() + "','" + plan.getRental() + "','" + plan.getBillingcycle() + "','" + plan.getFacilities() + "','" + plan.getAssignto() + "')";
-            //System.out.println(queryINSERTMSISDN);
+            //log.info(queryINSERTMSISDN);
 
 
             m_Connection = getDbConnection().getConnection();
@@ -2852,7 +2854,7 @@ public class DataService {
     public List<Plan> listPlan() {
         List<Plan> list = new ArrayList<Plan>();
         String queryLISTDEVICE = "select * from defining_plan";
-        System.out.println(queryLISTDEVICE);
+        log.info(queryLISTDEVICE);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2870,7 +2872,7 @@ public class DataService {
 
         } catch (SQLException e) {
             list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return list;
@@ -2884,7 +2886,7 @@ public class DataService {
         } else {
             queryLISTDEVICE = "select * from defining_plan where assignto =" + userID;
         }
-        System.out.println(queryLISTDEVICE);
+        log.info(queryLISTDEVICE);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2902,7 +2904,7 @@ public class DataService {
 
         } catch (SQLException e) {
             list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return list;
@@ -2921,7 +2923,7 @@ public class DataService {
             m_Statement = m_Connection.createStatement();
             m_Statement.executeQuery(st);
             int i = m_Statement.executeUpdate(s);
-            System.out.println("@@@@@@@@@@@@@@@@@@@" + i);
+            log.info("@@@@@@@@@@@@@@@@@@@" + i);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -2951,7 +2953,7 @@ public class DataService {
 
         queryLISTDEVICE = "select * from define_service_text";
 
-        System.out.println(queryLISTDEVICE);
+        log.info(queryLISTDEVICE);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -2968,7 +2970,7 @@ public class DataService {
 
         } catch (SQLException e) {
             list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return list;
@@ -2980,12 +2982,12 @@ public class DataService {
                 + "', S_H_EDU_CESS='" + tax.getSheCess() + "', OTHER_TEX='"
                 + tax.getOtherTax() + "' where SERVICEID=1 ";
 
-        System.out.println(queryEDITMSISDN + "-------------");
+        log.info(queryEDITMSISDN + "-------------");
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
             int i = m_Statement.executeUpdate(queryEDITMSISDN);
-            System.out.println(i + "-------------");
+            log.info(i + "-------------");
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -3014,7 +3016,7 @@ public class DataService {
             queryLISTDEVICE = "select DEVICEID from device where userid in(select userid from user where userid='" + userID + "' or ownerid='" + userID + "')";
 
         }
-        System.out.println("Device Id List : " + queryLISTDEVICE);
+        log.info("Device Id List : " + queryLISTDEVICE);
 
         try {
             m_Connection = getDbConnection().getConnection();
@@ -3028,7 +3030,7 @@ public class DataService {
 
         } catch (SQLException e) {
             list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return list;
@@ -3049,13 +3051,13 @@ public class DataService {
         // queryLISTDEVICE="select PLAN_NAME from defining_plan where ASSIGNTO =+'"+11+"'+";
 
 
-        System.out.println(queryLISTDEVICE);
+        log.info(queryLISTDEVICE);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
             m_ResultSet = m_Statement.executeQuery(queryLISTDEVICE);
 
-            System.out.println(queryLISTDEVICE + "8888888888888*************");
+            log.info(queryLISTDEVICE + "8888888888888*************");
             while (m_ResultSet.next()) {
 
                 list.add(m_ResultSet.getString("PLAN_NAME"));
@@ -3063,7 +3065,7 @@ public class DataService {
 
         } catch (SQLException e) {
             list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return list;
@@ -3075,7 +3077,7 @@ public class DataService {
 
         queryLISTDEVICE = "select SMS_PLAN from sms_plan";
 
-        System.out.println(queryLISTDEVICE);
+        log.info(queryLISTDEVICE);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -3088,7 +3090,7 @@ public class DataService {
 
         } catch (SQLException e) {
             list = null;
-            System.out.println(e);
+            log.info(e);
         }
 
         return list;
@@ -3098,12 +3100,12 @@ public class DataService {
         try {
 
             String s = "insert into assign_plan(DEVICEID,PLAN_NAME,SMS_PLAN)values('" + deviceId + "','" + plan + "','" + smsPlan + "')";
-            System.out.println(s);
+            log.info(s);
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
 
             int i = m_Statement.executeUpdate(s);
-            System.out.println("Assign Plan" + i);
+            log.info("Assign Plan" + i);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -3134,7 +3136,7 @@ public class DataService {
 
         queryLISTMSISDN = "select userid from user where uprofile=2";
 
-        System.out.println(queryLISTMSISDN);
+        log.info(queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -3170,7 +3172,7 @@ public class DataService {
         Plan plan = new Plan();
         String queryLISTMSISDN = "select * from defining_plan where plan_name in"
                 + "(select plan_name from assign_plan where deviceid='" + deviceid + "') ";
-        System.out.println("select plan details--->" + queryLISTMSISDN);
+        log.info("select plan details--->" + queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -3211,7 +3213,7 @@ public class DataService {
     public Bill getPreviousBillInfo(long deviceid) {
         Bill bill = new Bill();
         String queryLISTMSISDN = "select AMT_BEFORE_DUE_DATE from bill_generation where deviceid='" + deviceid + "'";
-        System.out.println("Previous Bill details--->" + queryLISTMSISDN);
+        log.info("Previous Bill details--->" + queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -3248,7 +3250,7 @@ public class DataService {
         SmsPlan smsPlan = new SmsPlan();
         String queryLISTMSISDN = "select sms_amount from sms_plan where sms_plan in"
                 + "(select sms_plan from assign_plan where DEVICEID='" + deviceid + "')";
-        System.out.println("Sms Plan Details--->" + queryLISTMSISDN);
+        log.info("Sms Plan Details--->" + queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();
@@ -3284,7 +3286,7 @@ public class DataService {
         Payment payment = new Payment();
         String queryLISTMSISDN = "select RECEIVED_AMOUNT,DISCOUNT,COUPON_DISCOUNT from payment "
                 + "where PAYMENT_ID='" + deviceid + "'";
-        System.out.println("Payment Details Details--->" + queryLISTMSISDN);
+        log.info("Payment Details Details--->" + queryLISTMSISDN);
         try {
             m_Connection = getDbConnection().getConnection();
             m_Statement = m_Connection.createStatement();

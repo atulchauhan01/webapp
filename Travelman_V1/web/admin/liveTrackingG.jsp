@@ -25,29 +25,13 @@
         <!-- Theme Start -->  
         <link href="themes/blue/styles.css" rel="stylesheet" type="text/css" />
         <!-- Theme End -->
-        <script>
-            var map;
-            var arrMarkers = [];
-            var arrInfoWindows = [];
-            function mapInit() {
-                var centerCoord = new google.maps.LatLng(24.173148, 78.042069);
-                var mapOptions = {
-                    zoom: 5,
-                    center: centerCoord,
-                    mapTypeId: google.maps.MapTypeId.ROADMAP
-                };
-                map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-            }
-
-
-
-        </script>
+ 
     </head>
     <body id="homepage"  onload="mapInit(); InitializeTimer();" >
-        <input type="text" name="latitude" id="latitude" value="<s:property value="latitude"/>"/>
+    <!--    <input type="text" name="latitude" id="latitude" value="<s:property value="latitude"/>"/>
         <input type="text" name="longitude" id="longitude" value="<s:property value="longitude"/>"/>
-        <input type="text" name="location" id="location" />
-        <input type="button" onclick="getLocation('url');" name="location" />
+        <input type="text" name="location" id="location" />     -->
+        
         <div id="header">
             <a href="" title=""><img src="img/cp_logo.png" alt="Control Panel" class="logo" /></a>
             <div id="searcharea">
@@ -93,7 +77,7 @@
                                     <td><s:property value="date"/></td>
                                     <td><s:property value="speed"/></td>
                                     <td><s:property value="acc_status"/></td>
-                                    <td><input type="text" readonly="readonly" width="50" boder="0" id="<s:property value="deviceid"/>" value="" style="width: 400px;border-color: transparent"/>
+                                    <td><input type="text" readonly="readonly" width="50" boder="0" id="<s:property value="deviceid"/>" value="Click vehicle image to populate address" style="width: 400px;border-color: transparent"/>
 
 
                                     </td>                         
