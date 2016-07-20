@@ -167,6 +167,5 @@
     <script type='text/javascript' src='scripts/visualize.jQuery.js'></script>
     <script type="text/javascript" src='scripts/functions.js'></script>
     
-
 </body>
 </html>
